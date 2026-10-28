@@ -1,0 +1,21 @@
+{
+  "name": "bmh231-odev2",
+  "version": "1.0.0",
+  "description": "Kampüs Etkinlik Panosu - BMH231 Web Programlama Ödev 2",
+  "main": "sunucu.js",
+  "scripts": {
+    "start": "node sunucu.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nnozer34-ctrl/bmh231-odev2.git"
+  },
+  "keywords": [],
+  "author": "Nisanur Özer",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/nnozer34-ctrl/bmh231-odev2/issues"
+  },
+  "homepage": "https://github.com/nnozer34-ctrl/bmh231-odev2#readme"
+}
