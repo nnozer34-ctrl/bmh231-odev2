@@ -188,6 +188,10 @@ input {
     background-color: var(--ana-renk-koyu);
 }
 
+#form-ileti {
+    white-space: pre-line;
+}
+
 .hata {
     color: var(--hata-renk);
     font-weight: bold;

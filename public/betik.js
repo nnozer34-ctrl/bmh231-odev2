@@ -28,7 +28,7 @@ function listeyiGuncelle() {
     });
 
     kartlariCiz(sonuc);
-        const durum = document.getElementById("durum");
+    const durum = document.getElementById("durum");
     if (sonuc.length === 0) {
         durum.textContent = "Aramanıza uygun etkinlik yok.";
     } else {
@@ -90,3 +90,42 @@ function kartlariCiz(liste) {
 }
 
 kartlariCiz(etkinlikler);
+
+const form = document.getElementById("oneri-formu");
+const formIleti = document.getElementById("form-ileti");
+
+form.addEventListener("submit", (olay) => {
+    olay.preventDefault();
+    const ad = form.ad.value.trim();
+    const tarih = form.tarih.value;
+    const eposta = form.eposta.value.trim();
+    const hatalar = [];
+
+    if (ad.length < 5) {
+        hatalar.push("Etkinlik adı en az 5 karakter olmalıdır.");
+    }
+    if (tarih === "") {
+        hatalar.push("Lütfen bir tarih seçin.");
+    } else {
+        const secilenGun = new Date(tarih + "T00:00");
+        const bugun = new Date();
+        bugun.setHours(0, 0, 0, 0);
+
+        if (secilenGun < bugun) {
+            hatalar.push("Tarih geçmiş bir gün olamaz.");
+        }
+
+    }
+    const epostaKalibi = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!epostaKalibi.test(eposta)) {
+        hatalar.push("Lütfen geçerli bir e-posta adresi girin.");
+    }
+    if (hatalar.length > 0) {
+        formIleti.className = "hata";
+        formIleti.textContent = hatalar.join("\n");
+    } else {
+        formIleti.className = "basarili";
+        formIleti.textContent = "Teşekkürler! Etkinlik öneriniz alındı.";
+        form.reset();
+    }
+});
