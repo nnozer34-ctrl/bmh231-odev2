@@ -27,7 +27,7 @@ function kartOlustur(etkinlik) {
     etiket.className = "etiket";
     etiket.textContent = turAdlari[etkinlik.tur];
 
-    const baslik = document.createElement("h3");
+    const baslik = document.createElement("h2");
     baslik.textContent = etkinlik.baslik;
 
     const tarih = document.createElement("p");

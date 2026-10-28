@@ -142,9 +142,10 @@ input {
     box-shadow: 0 2px 8px rgba(91, 42, 134, 0.12);
 }
 
-.kart h3 {
+.kart h2 {
     margin: 0 0 8px;
     color: var(--ana-renk-koyu);
+    font-size: 1.15rem;
 }
 
 .kart p {
