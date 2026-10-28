@@ -1,12 +1,4 @@
-// ===== Etkinlik verisi (D2'de API'den gelecek) =====
-const etkinlikler = [
-    { id: 1, baslik: "BozokChain Bootcamp", tur: "atolye", tarih: "2027-04-23", yer: "Mühendislik Mimarlık Fakültesi Bilgisayar Laboratuvarı", kontenjan: 60 },
-    { id: 2, baslik: "Git ve GitHub ile Sürüm Kontrolü Atölyesi", tur: "atolye", tarih: "2026-11-12", yer: "MMF Bilgisayar Laboratuvarı 2", kontenjan: 25 },
-    { id: 3, baslik: "Yapay Zekâ ve Veri Bilimi Kariyer Söyleşisi", tur: "soylesi", tarih: "2026-11-19", yer: "MMF Konferans Salonu", kontenjan: 150 },
-    { id: 4, baslik: "Web Güvenliği ve XSS Söyleşisi", tur: "soylesi", tarih: "2026-12-03", yer: "Merkez Kütüphane Etkinlik Salonu", kontenjan: 80 },
-    { id: 5, baslik: "Bilgisayar Mühendisliği Tanışma Toplantısı", tur: "topluluk", tarih: "2026-11-06", yer: "MMF Fuaye Alanı", kontenjan: 120 },
-    { id: 6, baslik: "Fotoğrafçılık Kulübü Kampüs Yürüyüşü", tur: "topluluk", tarih: "2026-11-28", yer: "Kampüs Ana Giriş", kontenjan: 40 }
-];
+let etkinlikler = [];
 
 // Verideki tür kodlarını ekranda görünecek adlara çevirir
 const turAdlari = {
@@ -89,7 +81,26 @@ function kartlariCiz(liste) {
     });
 }
 
-kartlariCiz(etkinlikler);
+async function etkinlikleriYukle() {
+    const durum = document.getElementById("durum");
+    durum.textContent = "Yükleniyor...";
+
+    try {
+        const yanit = await fetch("/api/etkinlikler");
+
+        if (!yanit.ok) {
+            throw new Error("Sunucu hatası: " + yanit.status);
+        }
+
+        etkinlikler = await yanit.json();
+        listeyiGuncelle();
+    } catch (hata) {
+        durum.textContent = "Etkinlikler yüklenemedi. Sunucunun çalıştığından emin olup sayfayı yenileyin.";
+        console.error(hata);
+    }
+}
+
+etkinlikleriYukle();
 
 const form = document.getElementById("oneri-formu");
 const formIleti = document.getElementById("form-ileti");
