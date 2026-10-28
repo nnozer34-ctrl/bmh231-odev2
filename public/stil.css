@@ -1,0 +1,233 @@
+/* ===== 1. Tüm öğeler için border-box ===== */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/* ===== 2. CSS değişkenleri (mor tema) ===== */
+:root {
+    --ana-renk: #5b2a86;
+    --ana-renk-koyu: #3d1a5c;
+    --vurgu-renk: #c77dff;
+    --acik-mor: #f3eafb;
+    --arka-plan: #faf7fd;
+    --kart-arka-plan: #ffffff;
+    --yazi-renk: #2b2135;
+    --hata-renk: #b3261e;
+    --basari-renk: #1e7a3c;
+    --kenar-yuvarlak: 10px;
+    --bosluk: 16px;
+}
+
+/* ===== 3. Sayfanın genel görünümü ===== */
+body {
+    margin: 0;
+    font-family: system-ui, sans-serif;
+    background-color: var(--arka-plan);
+    color: var(--yazi-renk);
+    line-height: 1.5;
+}
+
+h1,
+h2 {
+    color: var(--ana-renk);
+}
+
+/* Klavyeyle gezinirken odaklanılan öğe görünsün (erişilebilirlik) */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+    outline: 3px solid var(--vurgu-renk);
+    outline-offset: 2px;
+}
+
+/* ===== 4. Üst bant: Flexbox ===== */
+.ust-bant {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--bosluk);
+    background-color: var(--ana-renk);
+    color: white;
+}
+
+.logo {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.ust-bant nav {
+    display: flex;
+    gap: var(--bosluk);
+}
+
+.ust-bant a {
+    color: white;
+    text-decoration: none;
+}
+
+.ust-bant a:hover {
+    text-decoration: underline;
+}
+
+/* ===== 5. Ana içerik ===== */
+main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: var(--bosluk);
+}
+
+section {
+    margin-bottom: calc(var(--bosluk) * 2);
+}
+
+/* ===== 6. Filtre ve arama alanı: Flexbox ===== */
+.arac-cubugu {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--bosluk);
+    margin-bottom: var(--bosluk);
+}
+
+.filtreler {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.filtre {
+    padding: 8px 16px;
+    border: 2px solid var(--ana-renk);
+    border-radius: 999px;
+    background-color: white;
+    color: var(--ana-renk);
+    font: inherit;
+    cursor: pointer;
+}
+
+.filtre:hover {
+    background-color: var(--acik-mor);
+}
+
+.filtre.secili {
+    background-color: var(--ana-renk);
+    color: white;
+}
+
+/* Arama etiketini ve kutusunu sağa iter */
+.arac-cubugu label {
+    margin-left: auto;
+}
+
+input {
+    padding: 8px 12px;
+    border: 1px solid #b9a7cc;
+    border-radius: var(--kenar-yuvarlak);
+    font: inherit;
+}
+
+#durum {
+    color: var(--ana-renk);
+    font-weight: bold;
+}
+
+/* ===== 7. Etkinlik kartları: Grid ===== */
+.kartlar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: var(--bosluk);
+}
+
+.kart {
+    background-color: var(--kart-arka-plan);
+    border-top: 4px solid var(--ana-renk);
+    border-radius: var(--kenar-yuvarlak);
+    padding: var(--bosluk);
+    box-shadow: 0 2px 8px rgba(91, 42, 134, 0.12);
+}
+
+.kart h3 {
+    margin: 0 0 8px;
+    color: var(--ana-renk-koyu);
+}
+
+.kart p {
+    margin: 4px 0;
+}
+
+.etiket {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 999px;
+    background-color: var(--acik-mor);
+    color: var(--ana-renk-koyu);
+    font-size: 0.85rem;
+    font-weight: bold;
+}
+
+/* ===== 8. Öneri formu ===== */
+#oneri-formu {
+    display: grid;
+    gap: 8px;
+    max-width: 420px;
+    padding: var(--bosluk);
+    background-color: var(--kart-arka-plan);
+    border-radius: var(--kenar-yuvarlak);
+    box-shadow: 0 2px 8px rgba(91, 42, 134, 0.12);
+}
+
+#oneri-formu button {
+    margin-top: 8px;
+    padding: 10px;
+    border: none;
+    border-radius: var(--kenar-yuvarlak);
+    background-color: var(--ana-renk);
+    color: white;
+    font: inherit;
+    cursor: pointer;
+}
+
+#oneri-formu button:hover {
+    background-color: var(--ana-renk-koyu);
+}
+
+.hata {
+    color: var(--hata-renk);
+    font-weight: bold;
+}
+
+.basarili {
+    color: var(--basari-renk);
+    font-weight: bold;
+}
+
+/* ===== 9. Alt bilgi ===== */
+footer {
+    padding: var(--bosluk);
+    background-color: var(--ana-renk-koyu);
+    color: white;
+    text-align: center;
+}
+
+footer p {
+    margin: 0;
+}
+
+/* ===== 10. Duyarlı tasarım (B3): dar ekranda alt alta ===== */
+@media (max-width: 600px) {
+    .ust-bant {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .arac-cubugu {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .arac-cubugu label {
+        margin-left: 0;
+    }
+}
