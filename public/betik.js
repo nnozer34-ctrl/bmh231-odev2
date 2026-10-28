@@ -17,6 +17,43 @@ const turAdlari = {
 
 // Sayfadaki kartlar kutusu
 const kartlarKutusu = document.getElementById("kartlar");
+let seciliTur = "tumu";
+let aramaMetni = "";
+
+function listeyiGuncelle() {
+    const sonuc = etkinlikler.filter(e => {
+        const turUygun = seciliTur === "tumu" || e.tur === seciliTur;
+        const aramaUygun = e.baslik.toLocaleLowerCase("tr-TR").includes(aramaMetni);
+        return turUygun && aramaUygun;
+    });
+
+    kartlariCiz(sonuc);
+        const durum = document.getElementById("durum");
+    if (sonuc.length === 0) {
+        durum.textContent = "Aramanıza uygun etkinlik yok.";
+    } else {
+        durum.textContent = "";
+    }
+}
+
+const filtreDugmeleri = document.querySelectorAll(".filtre");
+
+filtreDugmeleri.forEach(dugme => {
+    dugme.addEventListener("click", () => {
+        filtreDugmeleri.forEach(d => d.classList.remove("secili"));
+        dugme.classList.add("secili");
+
+        seciliTur = dugme.dataset.tur;
+        listeyiGuncelle();
+    });
+});
+
+const aramaKutusu = document.getElementById("arama");
+
+aramaKutusu.addEventListener("input", () => {
+    aramaMetni = aramaKutusu.value.trim().toLocaleLowerCase("tr-TR");
+    listeyiGuncelle();
+});
 
 // ===== C1: Tek bir etkinlikten kart oluşturur =====
 function kartOlustur(etkinlik) {
