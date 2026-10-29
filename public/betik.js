@@ -1,14 +1,46 @@
 let etkinlikler = [];
 
-// Verideki tür kodlarını ekranda görünecek adlara çevirir
 const turAdlari = {
     atolye: "Atölye",
     soylesi: "Söyleşi",
     topluluk: "Topluluk"
 };
 
-// Sayfadaki kartlar kutusu
 const kartlarKutusu = document.getElementById("kartlar");
+
+function kartOlustur(etkinlik) {
+    const kart = document.createElement("article");
+    kart.className = "kart";
+
+    const etiket = document.createElement("span");
+    etiket.className = "etiket";
+    etiket.textContent = turAdlari[etkinlik.tur];
+
+    const baslik = document.createElement("h2");
+    baslik.textContent = etkinlik.baslik;
+
+    const tarih = document.createElement("p");
+    tarih.textContent = "Tarih: " + new Date(etkinlik.tarih).toLocaleDateString("tr-TR");
+
+    const yer = document.createElement("p");
+    yer.textContent = "Yer: " + etkinlik.yer;
+
+    const kontenjan = document.createElement("p");
+    kontenjan.textContent = "Kontenjan: " + etkinlik.kontenjan + " kişi";
+
+    kart.append(etiket, baslik, tarih, yer, kontenjan);
+
+    return kart;
+}
+
+function kartlariCiz(liste) {
+    kartlarKutusu.replaceChildren();
+
+    liste.forEach(etkinlik => {
+        kartlarKutusu.append(kartOlustur(etkinlik));
+    });
+}
+
 let seciliTur = "tumu";
 let aramaMetni = "";
 
@@ -47,40 +79,6 @@ aramaKutusu.addEventListener("input", () => {
     listeyiGuncelle();
 });
 
-// ===== C1: Tek bir etkinlikten kart oluşturur =====
-function kartOlustur(etkinlik) {
-    const kart = document.createElement("article");
-    kart.className = "kart";
-
-    const etiket = document.createElement("span");
-    etiket.className = "etiket";
-    etiket.textContent = turAdlari[etkinlik.tur];
-
-    const baslik = document.createElement("h2");
-    baslik.textContent = etkinlik.baslik;
-
-    const tarih = document.createElement("p");
-    tarih.textContent = "Tarih: " + new Date(etkinlik.tarih).toLocaleDateString("tr-TR");
-
-    const yer = document.createElement("p");
-    yer.textContent = "Yer: " + etkinlik.yer;
-
-    const kontenjan = document.createElement("p");
-    kontenjan.textContent = "Kontenjan: " + etkinlik.kontenjan + " kişi";
-
-    kart.append(etiket, baslik, tarih, yer, kontenjan);
-    return kart;
-}
-
-// ===== C1: Verilen listedeki tüm etkinlikleri sayfaya çizer =====
-function kartlariCiz(liste) {
-    kartlarKutusu.replaceChildren();
-
-    liste.forEach(etkinlik => {
-        kartlarKutusu.append(kartOlustur(etkinlik));
-    });
-}
-
 async function etkinlikleriYukle() {
     const durum = document.getElementById("durum");
     durum.textContent = "Yükleniyor...";
@@ -115,6 +113,7 @@ form.addEventListener("submit", (olay) => {
     if (ad.length < 5) {
         hatalar.push("Etkinlik adı en az 5 karakter olmalıdır.");
     }
+
     if (tarih === "") {
         hatalar.push("Lütfen bir tarih seçin.");
     } else {
@@ -125,12 +124,13 @@ form.addEventListener("submit", (olay) => {
         if (secilenGun < bugun) {
             hatalar.push("Tarih geçmiş bir gün olamaz.");
         }
-
     }
+
     const epostaKalibi = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!epostaKalibi.test(eposta)) {
         hatalar.push("Lütfen geçerli bir e-posta adresi girin.");
     }
+
     if (hatalar.length > 0) {
         formIleti.className = "hata";
         formIleti.textContent = hatalar.join("\n");
