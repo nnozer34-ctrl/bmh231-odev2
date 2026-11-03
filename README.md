@@ -1,14 +1,20 @@
-# Kampüs Etkinlik Panosu
+# Bozok Etkinlik Panosu
 
-BMH231 Web Programlama dersi Ödev 2 kapsamında geliştirdiğim, Yozgat Bozok Üniversitesi kampüsündeki etkinlikleri listeleyen küçük bir web uygulaması.
+## Projenin Amacı
 
-Sayfa semantik HTML ve CSS ile hazırlandı; etkinlik kartları JavaScript ile oluşturuluyor. Veriler, yalnızca Node.js'in `http`, `fs` ve `path` modülleriyle yazılmış bir sunucunun JSON API'sinden `fetch` ile çekiliyor. Kullanıcı etkinlikleri türe göre süzebilir, başlıkta arama yapabilir ve formla yeni bir etkinlik önerebilir.
+Site, "Bozok Etkinlik Panosu" adında bir web uygulaması. Yozgat Bozok Üniversitesi öğrencileri için hazırlanmış; kampüsteki atölye, söyleşi ve topluluk etkinliklerinin adını, tarihini, yerini ve kontenjanını gösteriyor.
 
-![Kampüs Etkinlik Panosu ekran görüntüsü](ekran-goruntusu.png)
+Kullanıcı sitede şunları yapabiliyor:
 
-## Kurulum ve çalıştırma
+- **Filtreleme:** "Atölye", "Söyleşi" veya "Topluluk" butonlarına basarak etkinlikleri türüne göre ayırabiliyor; "Tümü" butonuyla bütün etkinlikleri yeniden görebiliyor.
+- **Arama:** Arama kutusuna etkinliğin başlığından bir kelime yazarak aradığı etkinliği anında bulabiliyor.
+- **Öneri Gönderme:** Sayfanın altındaki formu doldurarak yeni bir etkinlik önerebiliyor. Form; etkinlik adını, tarihi ve e-postayı kontrol edip hata ya da teşekkür iletisi gösteriyor (öneri şimdilik sunucuya kaydedilmiyor).
 
-Gereksinim: [Node.js](https://nodejs.org) (LTS sürümü). Projede harici bir paket kullanılmadığı için `npm install` gerekmez.
+Veriler, Node.js sunucusundaki `etkinlikler.json` dosyasında duruyor. Sayfa açılınca JavaScript (`fetch`) ile arka planda sunucunun `/api/etkinlikler` adresine istek atılıyor. Gelen JSON verisi alınıp JavaScript ile kartlara dönüştürülüyor ve ekrana basılıyor.
+
+## Kurulum ve Çalıştırma
+
+Bilgisayarınızda Node.js kurulu olmalıdır. Projede harici paket kullanılmadığı için `npm install` gerekmez.
 
 ```bash
 git clone https://github.com/nnozer34-ctrl/bmh231-odev2.git
@@ -16,37 +22,36 @@ cd bmh231-odev2
 npm start
 ```
 
-Ardından tarayıcıda `http://localhost:3000` adresini açın. Sunucuyu durdurmak için uçbirimde `Ctrl+C` tuşlarına basın.
+Ardından tarayıcıda http://localhost:3000 adresini açın.
 
-> **Not:** Sayfayı Live Server gibi bir araçla değil, `npm start` ile başlatılan sunucudan açın. Etkinlikler aynı sunucunun API'sinden geldiği için başka bir sunucudan açıldığında yüklenemez.
+> **Not:** Sayfa mutlaka `npm start` ile başlatılan sunucu üzerinden (http://localhost:3000) açılmalıdır. `index.html` dosyasına çift tıklanarak ya da Live Server ile açılırsa `/api/etkinlikler` isteği sunucuya ulaşmaz ve etkinlikler yüklenmez.
 
-## API uç noktaları
+## API Uç Noktaları
 
-| Yöntem | Yol | Durum | Yanıt |
-|---|---|---|---|
-| GET | `/` ve `public/` altındaki dosyalar | 200 | Dosya içeriği (uzantıya göre `text/html`, `text/css`, `text/javascript`) |
-| GET | `/api/etkinlikler` | 200 | Tüm etkinlikler (JSON) |
-| GET | `/api/etkinlikler?tur=atolye` | 200 | Yalnızca o türdeki etkinlikler (`atolye`, `soylesi`, `topluluk`) |
-| GET | `/api/etkinlikler/3` | 200 | Tek etkinlik (JSON) |
-| GET | `/api/etkinlikler/999` | 404 | `{"hata": "Etkinlik bulunamadı"}` |
-| GET | Bulunmayan diğer yollar | 404 | Düz metin |
-| GET dışındaki yöntemler | Tüm yollar | 405 | Düz metin, `Allow: GET` başlığı |
+| Yöntem | Adres | Açıklama |
+|---|---|---|
+| GET | `/api/etkinlikler` | Bütün etkinlikleri JSON olarak döndürür |
+| GET | `/api/etkinlikler?tur=atolye` | Sadece türü atölye olan etkinlikleri döndürür |
+| GET | `/api/etkinlikler/3` | id'si 3 olan tek etkinliği döndürür |
+| GET | `/api/etkinlikler/999` | Böyle bir etkinlik yoksa 404 ve `{"hata":"Etkinlik bulunamadı"}` döndürür |
+| POST, PUT, DELETE | herhangi bir adres | 405 ve `Allow: GET` başlığı döndürür |
 
-## Proje yapısı
+## Proje Yapısı
 
 ```
 bmh231-odev2/
-├── sunucu.js          # http modülüyle yazılmış sunucu ve JSON API
-├── etkinlikler.json   # etkinlik verileri
-├── package.json       # "start": "node sunucu.js"
+├── public/
+│   ├── index.html
+│   ├── stil.css
+│   └── betik.js
 ├── .gitignore
+├── ekran-goruntusu.png
+├── etkinlikler.json
+├── package.json
 ├── README.md
-└── public/
-    ├── index.html     # sayfa iskeleti
-    ├── stil.css       # görünüm ve duyarlı tasarım
-    └── betik.js       # kartlar, filtre, arama, form doğrulama ve fetch
+└── sunucu.js
 ```
 
-## Geliştiren
+## Ekran Görüntüsü
 
-Nisanur Özer – Yozgat Bozok Üniversitesi, Bilgisayar Mühendisliği
+![Bozok Etkinlik Panosu ekran görüntüsü](ekran-goruntusu.png)
