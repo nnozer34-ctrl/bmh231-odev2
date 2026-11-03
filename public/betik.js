@@ -1,5 +1,7 @@
+// Sunucudan gelen etkinlikler bu dizide tutulur
 let etkinlikler = [];
 
+// JSON'daki tür kodlarının kartta görünecek adları
 const turAdlari = {
     atolye: "Atölye",
     soylesi: "Söyleşi",
@@ -8,6 +10,7 @@ const turAdlari = {
 
 const kartlarKutusu = document.getElementById("kartlar");
 
+// Kartı oluşturur; XSS'e karşı innerHTML yerine textContent kullanılır.
 function kartOlustur(etkinlik) {
     const kart = document.createElement("article");
     kart.className = "kart";
@@ -33,6 +36,7 @@ function kartOlustur(etkinlik) {
     return kart;
 }
 
+// Eski kartları siler, listedeki her etkinlik için yeni kart ekler.
 function kartlariCiz(liste) {
     kartlarKutusu.replaceChildren();
 
@@ -41,13 +45,16 @@ function kartlariCiz(liste) {
     });
 }
 
+// Seçili tür ve arama metni
 let seciliTur = "tumu";
 let aramaMetni = "";
 
+// Etkinlikleri seçili tür ve arama metnine göre süzüp yeniden çizer
 function listeyiGuncelle() {
     const sonuc = etkinlikler.filter(e => {
         const turUygun = seciliTur === "tumu" || e.tur === seciliTur;
         const aramaUygun = e.baslik.toLocaleLowerCase("tr-TR").includes(aramaMetni);
+        // Hem türe hem aramaya uymalı
         return turUygun && aramaUygun;
     });
 
@@ -62,6 +69,7 @@ function listeyiGuncelle() {
 
 const filtreDugmeleri = document.querySelectorAll(".filtre");
 
+// Tıklanan düğmeyi vurgular, türü data-tur'dan okur.
 filtreDugmeleri.forEach(dugme => {
     dugme.addEventListener("click", () => {
         filtreDugmeleri.forEach(d => d.classList.remove("secili"));
@@ -74,11 +82,13 @@ filtreDugmeleri.forEach(dugme => {
 
 const aramaKutusu = document.getElementById("arama");
 
+// Her harfte arar; büyük/küçük harf duyarsız.
 aramaKutusu.addEventListener("input", () => {
     aramaMetni = aramaKutusu.value.trim().toLocaleLowerCase("tr-TR");
     listeyiGuncelle();
 });
 
+// Etkinlikleri /api/etkinlikler adresinden çeker
 async function etkinlikleriYukle() {
     const durum = document.getElementById("durum");
     durum.textContent = "Yükleniyor...";
@@ -86,6 +96,7 @@ async function etkinlikleriYukle() {
     try {
         const yanit = await fetch("/api/etkinlikler");
 
+        // fetch 404/500'de hata fırlatmaz, ok'u elle kontrol et.
         if (!yanit.ok) {
             throw new Error("Sunucu hatası: " + yanit.status);
         }
@@ -104,6 +115,7 @@ const form = document.getElementById("oneri-formu");
 const formIleti = document.getElementById("form-ileti");
 
 form.addEventListener("submit", (olay) => {
+    // Sayfanın yenilenmesini engelle
     olay.preventDefault();
     const ad = form.ad.value.trim();
     const tarih = form.tarih.value;
@@ -126,6 +138,7 @@ form.addEventListener("submit", (olay) => {
         }
     }
 
+    // ad@alan.uzanti biçimini kontrol eden düzenli ifade
     const epostaKalibi = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!epostaKalibi.test(eposta)) {
         hatalar.push("Lütfen geçerli bir e-posta adresi girin.");
@@ -133,6 +146,7 @@ form.addEventListener("submit", (olay) => {
 
     if (hatalar.length > 0) {
         formIleti.className = "hata";
+        // \n + CSS pre-line ile hatalar alt alta görünür.
         formIleti.textContent = hatalar.join("\n");
     } else {
         formIleti.className = "basarili";

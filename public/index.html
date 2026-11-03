@@ -2,14 +2,18 @@
 <html lang="tr">
 
 <head>
+    <!-- Dil, karakter kodlaması, ekran uyumu, CSS ve defer ile JavaScript -->
     <meta charset="UTF-8">
+    <!-- Sayfa genişliğini cihaz ekranına eşitler, mobilde küçülmeyi önler -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bozok Etkinlik Panosu</title>
     <link rel="stylesheet" href="stil.css">
+    <!-- defer: betik, HTML tamamen okunduktan sonra çalışır -->
     <script src="betik.js" defer></script>
 </head>
 
 <body>
+    <!-- Üst bar: logo ve menü bağlantıları -->
     <header class="ust-bant">
         <div class="logo">Bozok Etkinlik</div>
         <nav>
@@ -18,9 +22,11 @@
         </nav>
     </header>
     <main>
+        <!-- Etkinlik listesi: tek h1, filtreler, arama ve kartlar -->
         <section id="liste">
             <h1>Yaklaşan Etkinlikler</h1>
             <div class="arac-cubugu">
+                <!-- data-tur değeri betik.js'te hangi türe göre süzüleceğini belirler -->
                 <div class="filtreler">
                     <button type="button" class="filtre secili" data-tur="tumu">Tümü</button>
                     <button type="button" class="filtre" data-tur="atolye">Atölye</button>
@@ -30,9 +36,12 @@
                 <label for="arama">Etkinlik ara</label>
                 <input type="search" id="arama" placeholder="Başlıkta ara...">
             </div>
+            <!-- Yükleniyor, hata ve sonuç yok iletileri burada gösterilir -->
             <p id="durum"></p>
+            <!-- Kartlar betik.js ile buraya eklenir -->
             <div id="kartlar" class="kartlar"></div>
         </section>
+        <!-- Öneri formu: label'lı üç alan, tarayıcı doğrulaması kapalı (novalidate) -->
         <section id="oner">
             <h2>Etkinlik Öner</h2>
             <form id="oneri-formu" novalidate>
@@ -47,9 +56,11 @@
 
                 <button type="submit">Öner</button>
             </form>
+            <!-- Form hataları ya da başarı iletisi burada gösterilir -->
             <p id="form-ileti"></p>
         </section>
     </main>
+    <!-- Telif bilgisi -->
     <footer>
         <p>© 2026 Bozok Etkinlik · BMH231 Web Programlama Ödev 2</p>
     </footer>
